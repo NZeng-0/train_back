@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.train.mapper.stationMapper">
+    
+    <resultMap type="station" id="stationResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="name"    column="name"    />
+        <result property="spell"    column="spell"    />
+        <result property="region"    column="region"    />
+        <result property="regionName"    column="region_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectstationVo">
+        select id,
+               code,
+               name,
+               spell,
+               region,
+               region_name,
+               create_time,
+               update_time,
+               del_flag
+        from t_station
+    </sql>
+
+    <select id="selectstationList" parameterType="station" resultMap="stationResult">
+        <include refid="selectstationVo"/>
+        <where>  
+            <if test="code != null  and code != ''"> and code like concat('%', #{code}, '%')</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="spell != null  and spell != ''"> and spell like concat('%', #{spell}, '%')</if>
+            <if test="region != null  and region != ''"> and region like concat('%', #{region}, '%')</if>
+            <if test="regionName != null  and regionName != ''"> and region_name like concat('%', #{regionName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectstationById" parameterType="String" resultMap="stationResult">
+        <include refid="selectstationVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertstation" parameterType="station" useGeneratedKeys="true" keyProperty="id">
+        insert into t_station
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">code,</if>
+            <if test="name != null">name,</if>
+            <if test="spell != null">spell,</if>
+            <if test="region != null">region,</if>
+            <if test="regionName != null">region_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">#{code},</if>
+            <if test="name != null">#{name},</if>
+            <if test="spell != null">#{spell},</if>
+            <if test="region != null">#{region},</if>
+            <if test="regionName != null">#{regionName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updatestation" parameterType="station">
+        update t_station
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="spell != null">spell = #{spell},</if>
+            <if test="region != null">region = #{region},</if>
+            <if test="regionName != null">region_name = #{regionName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletestationById" parameterType="String">
+        delete from t_station where id = #{id}
+    </delete>
+
+    <delete id="deletestationByIds" parameterType="String">
+        delete from t_station where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
