@@ -37,7 +37,7 @@ public class stationController extends BaseController
     /**
      * 查询车站列表
      */
-    @PreAuthorize("@ss.hasPermi('train:station:list')")
+//    @PreAuthorize("@ss.hasPermi('train:station:list')")
     @GetMapping("/list")
     public TableDataInfo list(station station)
     {
