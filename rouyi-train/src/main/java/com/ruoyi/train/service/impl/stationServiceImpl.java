@@ -4,7 +4,7 @@ import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.train.mapper.stationMapper;
+import com.ruoyi.train.mapper.StationMapper;
 import com.ruoyi.train.domain.station;
 import com.ruoyi.train.service.IstationService;
 
@@ -18,7 +18,7 @@ import com.ruoyi.train.service.IstationService;
 public class stationServiceImpl implements IstationService 
 {
     @Autowired
-    private stationMapper stationMapper;
+    private StationMapper stationMapper;
 
     /**
      * 查询车站
