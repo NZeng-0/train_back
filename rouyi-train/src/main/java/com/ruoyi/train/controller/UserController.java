@@ -114,6 +114,7 @@ public class UserController extends BaseController
             return AjaxResult.error("未登录");
         }
         User user = userService.getUserByName(token);
+        user.setPassword(null);
         return AjaxResult.success("操作成功", user);
     }
 }
