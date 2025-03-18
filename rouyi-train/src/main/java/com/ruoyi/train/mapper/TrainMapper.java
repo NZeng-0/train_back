@@ -2,6 +2,7 @@ package com.ruoyi.train.mapper;
 
 import java.util.List;
 import com.ruoyi.train.domain.Train;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 列车Mapper接口
@@ -9,6 +10,7 @@ import com.ruoyi.train.domain.Train;
  * @author me
  * @date 2025-03-17
  */
+@Mapper
 public interface TrainMapper 
 {
     /**
