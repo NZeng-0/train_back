@@ -29,15 +29,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectTrainList" parameterType="Train" resultMap="TrainResult">
         <include refid="selectTrainVo"/>
-        <where>  
+        <where>
             <if test="trainNumber != null  and trainNumber != ''"> and train_number = #{trainNumber}</if>
             <if test="trainType != null "> and train_type like concat('%', #{trainType}, '%')</if>
             <if test="trainTag != null  and trainTag != ''"> and train_tag like concat('%', #{trainTag}, '%')</if>
             <if test="trainBrand != null  and trainBrand != ''"> and train_brand like concat('%', #{trainBrand}, '%')</if>
             <if test="startStation != null  and startStation != ''"> and start_station like concat('%', #{startStation}, '%')</if>
             <if test="endStation != null  and endStation != ''"> and end_station like concat('%', #{endStation}, '%')</if>
-            <if test="startRegion != null  and startRegion != ''"> and start_region like concat('%', #{startRegion}, '%')</if>
-            <if test="endRegion != null  and endRegion != ''"> and end_region like concat('%', #{endRegion}, '%')</if>
+            <if test="startRegion != null and startRegion.trim() != ''">
+                AND start_region LIKE CONCAT('%', #{startRegion}, '%')
+            </if>
+            <if test="endRegion != null and endRegion.trim() != ''">
+                AND end_region LIKE CONCAT('%', #{endRegion}, '%')
+            </if>
             <if test="saleTime != null "> and sale_time = #{saleTime}</if>
             <if test="saleStatus != null "> and sale_status = #{saleStatus}</if>
             <if test="departureTime != null "> and departure_time = #{departureTime}</if>

@@ -100,4 +100,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <insert id="batchInsertSeats" parameterType="java.util.List">
+        INSERT INTO t_seat (train_id, carriage_number, seat_number, seat_type, start_station, end_station, price, seat_status, create_time, update_time, del_flag)
+        VALUES
+        <foreach collection="list" item="seat" separator=",">
+            (#{seat.trainId}, #{seat.carriageNumber}, #{seat.seatNumber}, #{seat.seatType},
+            #{seat.startStation}, #{seat.endStation}, #{seat.price}, #{seat.seatStatus},
+            NOW(), NOW(), 0)
+        </foreach>
+    </insert>
+
 </mapper>

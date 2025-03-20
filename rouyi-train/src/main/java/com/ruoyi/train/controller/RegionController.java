@@ -37,7 +37,7 @@ public class RegionController extends BaseController
     /**
      * 查询地区列表
      */
-    @PreAuthorize("@ss.hasPermi('train:region:list')")
+//    @PreAuthorize("@ss.hasPermi('train:region:list')")
     @GetMapping("/list")
     public TableDataInfo list(Region region)
     {

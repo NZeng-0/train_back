@@ -53,7 +53,7 @@ public class Train extends BaseEntity
     private String endRegion;
 
     /** 销售时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @Excel(name = "销售时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date saleTime;
 
@@ -62,13 +62,13 @@ public class Train extends BaseEntity
     private Long saleStatus;
 
     /** 出发时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "出发时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
+    @Excel(name = "出发时间", width = 30, dateFormat = "HH:mm")
     private Date departureTime;
 
     /** 到达时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "到达时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "HH:mm", timezone = "GMT+8")
+    @Excel(name = "到达时间", width = 30, dateFormat = "HH:mm")
     private Date arrivalTime;
 
     /** 删除标识 */

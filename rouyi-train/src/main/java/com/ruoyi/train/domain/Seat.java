@@ -53,6 +53,27 @@ public class Seat extends BaseEntity
     /** 删除标识 */
     private Integer delFlag;
 
+    public Seat(
+            Long trainId,
+            String carriageNumber,
+            String seatNumber,
+            Long seatType,
+            String startStation,
+            String endStation,
+            Long price,
+            Long seatStatus
+    ) {
+        this.trainId = trainId;
+        this.carriageNumber = carriageNumber;
+        this.seatNumber = seatNumber;
+        this.seatType = seatType;
+        this.startStation = startStation;
+        this.endStation = endStation;
+        this.price = price;
+        this.seatStatus = seatStatus;
+        this.delFlag = 0;
+    }
+
     public void setId(String id) 
     {
         this.id = id;

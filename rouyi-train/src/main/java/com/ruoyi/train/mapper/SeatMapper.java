@@ -2,6 +2,8 @@ package com.ruoyi.train.mapper;
 
 import java.util.List;
 import com.ruoyi.train.domain.Seat;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.repository.query.Param;
 
 /**
  * 座位Mapper接口
@@ -9,6 +11,7 @@ import com.ruoyi.train.domain.Seat;
  * @author me
  * @date 2025-03-18
  */
+@Mapper
 public interface SeatMapper 
 {
     /**
@@ -58,4 +61,7 @@ public interface SeatMapper
      * @return 结果
      */
     public int deleteSeatByIds(String[] ids);
+
+    void batchInsertSeats(@Param("list") List<Seat> seats);
+
 }
