@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.train.domain.Seat;
+import com.ruoyi.train.domain.TrainResDTO;
 import com.ruoyi.train.mapper.SeatMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class TrainServiceImpl implements ITrainService
      * @return 列车
      */
     @Override
-    public List<Train> selectTrainList(Train train)
+    public List<TrainResDTO> selectTrainList(Train train)
     {
         return trainMapper.selectTrainList(train);
     }

@@ -23,12 +23,71 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="delFlag"    column="del_flag"    />
     </resultMap>
 
+    <resultMap id="TrainResultAndroid" type="TrainResDTO">
+        <result column="id" property="id"/>
+        <result column="train_number" property="trainNumber"/>
+        <result column="train_type" property="trainType"/>
+        <result column="train_tag" property="trainTag"/>
+        <result column="train_brand" property="trainBrand"/>
+        <result column="start_station" property="startStation"/>
+        <result column="end_station" property="endStation"/>
+        <result column="start_region" property="startRegion"/>
+        <result column="end_region" property="endRegion"/>
+        <result column="sale_time" property="saleTime"/>
+        <result column="sale_status" property="saleStatus"/>
+        <result column="departure_time" property="departureTime"/>
+        <result column="arrival_time" property="arrivalTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="business_seat" property="businessSeat"/>
+        <result column="first_seat" property="firstSeat"/>
+        <result column="second_seat" property="secondSeat"/>
+    </resultMap>
+
+
     <sql id="selectTrainVo">
         select id, train_number, train_type, train_tag, train_brand, start_station, end_station, start_region, end_region, sale_time, sale_status, departure_time, arrival_time, create_time, update_time, del_flag from t_train
     </sql>
 
-    <select id="selectTrainList" parameterType="Train" resultMap="TrainResult">
-        <include refid="selectTrainVo"/>
+    <sql id="businessSeatCount">
+        (SELECT COALESCE(SUM(c.seat_count - c.sold_seats), 0) FROM t_carriage c WHERE c.train_id = t.id AND c.carriage_type = 0)
+    </sql>
+
+    <sql id="firstSeatCount">
+        (SELECT COALESCE(SUM(c.seat_count - c.sold_seats), 0) FROM t_carriage c WHERE c.train_id = t.id AND c.carriage_type = 1)
+    </sql>
+
+    <sql id="secondSeatCount">
+        (SELECT COALESCE(SUM(c.seat_count - c.sold_seats), 0) FROM t_carriage c WHERE c.train_id = t.id AND c.carriage_type = 2)
+    </sql>
+
+    <sql id="selectTrainV1">
+        SELECT
+        t.id,
+        t.train_number,
+        t.train_type,
+        t.train_tag,
+        t.train_brand,
+        t.start_station,
+        t.end_station,
+        t.start_region,
+        t.end_region,
+        t.sale_time,
+        t.sale_status,
+        t.departure_time,
+        t.arrival_time,
+        t.create_time,
+        t.update_time,
+        t.del_flag,
+        <include refid="businessSeatCount"/> AS business_seat,
+        <include refid="firstSeatCount"/> AS first_seat,
+        <include refid="secondSeatCount"/> AS second_seat
+        FROM t_train t
+    </sql>
+
+    <select id="selectTrainList" parameterType="Train" resultMap="TrainResultAndroid">
+        <include refid="selectTrainV1"/>
         <where>
             <if test="trainNumber != null  and trainNumber != ''"> and train_number = #{trainNumber}</if>
             <if test="trainType != null "> and train_type like concat('%', #{trainType}, '%')</if>

@@ -2,6 +2,7 @@ package com.ruoyi.train.service;
 
 import java.util.List;
 import com.ruoyi.train.domain.Train;
+import com.ruoyi.train.domain.TrainResDTO;
 
 /**
  * 列车Service接口
@@ -25,7 +26,7 @@ public interface ITrainService
      * @param train 列车
      * @return 列车集合
      */
-    public List<Train> selectTrainList(Train train);
+    public List<TrainResDTO> selectTrainList(Train train);
 
     /**
      * 新增列车

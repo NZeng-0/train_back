@@ -2,6 +2,8 @@ package com.ruoyi.train.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.train.domain.TrainResDTO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,21 +43,8 @@ public class TrainController extends BaseController
     public TableDataInfo list(Train train)
     {
         startPage();
-        List<Train> list = trainService.selectTrainList(train);
+        List<TrainResDTO> list = trainService.selectTrainList(train);
         return getDataTable(list);
-    }
-
-    /**
-     * 导出列车列表
-     */
-    @PreAuthorize("@ss.hasPermi('train:train:export')")
-    @Log(title = "列车", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, Train train)
-    {
-        List<Train> list = trainService.selectTrainList(train);
-        ExcelUtil<Train> util = new ExcelUtil<Train>(Train.class);
-        util.exportExcel(response, list, "列车数据");
     }
 
     /**

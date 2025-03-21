@@ -107,6 +107,12 @@ public class UserController extends BaseController
         return AjaxResult.success("操作成功", token);
     }
 
+    @GetMapping("/logout")
+    public AjaxResult logout() {
+        String res = userService.logout();
+        return AjaxResult.success(res);
+    }
+
     @GetMapping("/info")
     public AjaxResult getUserInfo(HttpServletRequest request) {
         String token = request.getHeader("Authorization");

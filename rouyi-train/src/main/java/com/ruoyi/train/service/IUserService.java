@@ -65,4 +65,6 @@ public interface IUserService
     String login(String username, String password);
 
     User getUserByName(String token);
+
+    String logout();
 }

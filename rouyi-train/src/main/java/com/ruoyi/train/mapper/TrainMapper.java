@@ -2,6 +2,7 @@ package com.ruoyi.train.mapper;
 
 import java.util.List;
 import com.ruoyi.train.domain.Train;
+import com.ruoyi.train.domain.TrainResDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -27,7 +28,7 @@ public interface TrainMapper
      * @param train 列车
      * @return 列车集合
      */
-    public List<Train> selectTrainList(Train train);
+    public List<TrainResDTO> selectTrainList(Train train);
 
     /**
      * 新增列车

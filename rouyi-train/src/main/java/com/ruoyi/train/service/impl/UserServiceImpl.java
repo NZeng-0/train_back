@@ -158,6 +158,12 @@ public class UserServiceImpl implements IUserService {
         return createToken(user.getUsername());
     }
 
+    public String logout() {
+        // 记录登出日志
+        AsyncManager.me().execute(AsyncFactory.recordLogininfor(SecurityUtils.getUsername(), Constants.LOGOUT, "退出成功"));
+        return "登出成功";
+    }
+
     public User getUserByName(String token){
         String username = getUsernameFromToken(token);
         return userMapper.selectUserByUserName(username);
