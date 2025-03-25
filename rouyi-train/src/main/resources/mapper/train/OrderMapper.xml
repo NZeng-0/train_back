@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.train.mapper.OrderMapper">
+    
+    <resultMap type="Order" id="OrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderSn"    column="order_sn"    />
+        <result property="userId"    column="user_id"    />
+        <result property="trainId"    column="train_id"    />
+        <result property="trainNumber"    column="train_number"    />
+        <result property="ridingDate"    column="riding_date"    />
+        <result property="departure"    column="departure"    />
+        <result property="arrival"    column="arrival"    />
+        <result property="departureTime"    column="departure_time"    />
+        <result property="arrivalTime"    column="arrival_time"    />
+        <result property="seatType"    column="seat_type"    />
+        <result property="carriageNumber"    column="carriage_number"    />
+        <result property="seatNumber"    column="seat_number"    />
+        <result property="realName"    column="real_name"    />
+        <result property="ticketType"    column="ticket_type"    />
+        <result property="phone"    column="phone"    />
+        <result property="amount"    column="amount"    />
+        <result property="status"    column="status"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="payTime"    column="pay_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectOrderVo">
+        select id, order_sn, user_id, train_id, train_number, riding_date, departure, arrival, departure_time, arrival_time, seat_type, carriage_number, seat_number, real_name, ticket_type, phone, amount, status, pay_type, pay_time, create_time, update_time, del_flag from t_order
+    </sql>
+
+    <select id="selectOrderList" parameterType="Order" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        <where>  
+            <if test="orderSn != null  and orderSn != ''"> and order_sn = #{orderSn}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="trainId != null "> and train_id = #{trainId}</if>
+            <if test="trainNumber != null  and trainNumber != ''"> and train_number = #{trainNumber}</if>
+            <if test="ridingDate != null "> and riding_date = #{ridingDate}</if>
+            <if test="departure != null  and departure != ''"> and departure = #{departure}</if>
+            <if test="arrival != null  and arrival != ''"> and arrival = #{arrival}</if>
+            <if test="departureTime != null "> and departure_time = #{departureTime}</if>
+            <if test="arrivalTime != null "> and arrival_time = #{arrivalTime}</if>
+            <if test="seatType != null "> and seat_type = #{seatType}</if>
+            <if test="carriageNumber != null  and carriageNumber != ''"> and carriage_number = #{carriageNumber}</if>
+            <if test="seatNumber != null  and seatNumber != ''"> and seat_number = #{seatNumber}</if>
+            <if test="realName != null  and realName != ''"> and real_name like concat('%', #{realName}, '%')</if>
+            <if test="ticketType != null "> and ticket_type = #{ticketType}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="payType != null "> and pay_type = #{payType}</if>
+            <if test="payTime != null "> and pay_time = #{payTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectOrderById" parameterType="String" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOrder" parameterType="Order" useGeneratedKeys="true" keyProperty="id">
+        insert into t_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderSn != null and orderSn != ''">order_sn,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="trainId != null">train_id,</if>
+            <if test="trainNumber != null">train_number,</if>
+            <if test="ridingDate != null">riding_date,</if>
+            <if test="departure != null">departure,</if>
+            <if test="arrival != null">arrival,</if>
+            <if test="departureTime != null">departure_time,</if>
+            <if test="arrivalTime != null">arrival_time,</if>
+            <if test="seatType != null">seat_type,</if>
+            <if test="carriageNumber != null">carriage_number,</if>
+            <if test="seatNumber != null">seat_number,</if>
+            <if test="realName != null">real_name,</if>
+            <if test="ticketType != null">ticket_type,</if>
+            <if test="phone != null">phone,</if>
+            <if test="amount != null">amount,</if>
+            <if test="status != null">status,</if>
+            <if test="payType != null">pay_type,</if>
+            <if test="payTime != null">pay_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderSn != null and orderSn != ''">#{orderSn},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="trainId != null">#{trainId},</if>
+            <if test="trainNumber != null">#{trainNumber},</if>
+            <if test="ridingDate != null">#{ridingDate},</if>
+            <if test="departure != null">#{departure},</if>
+            <if test="arrival != null">#{arrival},</if>
+            <if test="departureTime != null">#{departureTime},</if>
+            <if test="arrivalTime != null">#{arrivalTime},</if>
+            <if test="seatType != null">#{seatType},</if>
+            <if test="carriageNumber != null">#{carriageNumber},</if>
+            <if test="seatNumber != null">#{seatNumber},</if>
+            <if test="realName != null">#{realName},</if>
+            <if test="ticketType != null">#{ticketType},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="status != null">#{status},</if>
+            <if test="payType != null">#{payType},</if>
+            <if test="payTime != null">#{payTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrder" parameterType="Order">
+        update t_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderSn != null and orderSn != ''">order_sn = #{orderSn},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="trainId != null">train_id = #{trainId},</if>
+            <if test="trainNumber != null">train_number = #{trainNumber},</if>
+            <if test="ridingDate != null">riding_date = #{ridingDate},</if>
+            <if test="departure != null">departure = #{departure},</if>
+            <if test="arrival != null">arrival = #{arrival},</if>
+            <if test="departureTime != null">departure_time = #{departureTime},</if>
+            <if test="arrivalTime != null">arrival_time = #{arrivalTime},</if>
+            <if test="seatType != null">seat_type = #{seatType},</if>
+            <if test="carriageNumber != null">carriage_number = #{carriageNumber},</if>
+            <if test="seatNumber != null">seat_number = #{seatNumber},</if>
+            <if test="realName != null">real_name = #{realName},</if>
+            <if test="ticketType != null">ticket_type = #{ticketType},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="payType != null">pay_type = #{payType},</if>
+            <if test="payTime != null">pay_time = #{payTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrderById" parameterType="String">
+        delete from t_order where id = #{id}
+    </delete>
+
+    <delete id="deleteOrderByIds" parameterType="String">
+        delete from t_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
