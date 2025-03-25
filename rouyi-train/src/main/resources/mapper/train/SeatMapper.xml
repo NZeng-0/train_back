@@ -8,7 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="trainId"    column="train_id"    />
         <result property="carriageNumber"    column="carriage_number"    />
-        <result property="seatNumber"    column="seat_number"    />
+        <result column="seat_number" property="seatNumber" jdbcType="VARCHAR"/>
         <result property="seatType"    column="seat_type"    />
         <result property="startStation"    column="start_station"    />
         <result property="endStation"    column="end_station"    />
@@ -40,6 +40,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectSeatById" parameterType="String" resultMap="SeatResult">
         <include refid="selectSeatVo"/>
         where id = #{id}
+    </select>
+
+    <select id="selectSeatByTrainIdAndType" parameterType="map" resultMap="SeatResult">
+        <include refid="selectSeatVo"/>
+        where train_id = #{id}
+        and seat_type = #{type}
+        and seat_status = 0
     </select>
 
     <insert id="insertSeat" parameterType="Seat" useGeneratedKeys="true" keyProperty="id">

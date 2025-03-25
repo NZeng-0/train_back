@@ -37,7 +37,7 @@ public class TrainServiceImpl implements ITrainService
      * @return 列车
      */
     @Override
-    public Train selectTrainById(String id)
+    public TrainResDTO selectTrainById(String id)
     {
         return trainMapper.selectTrainById(id);
     }

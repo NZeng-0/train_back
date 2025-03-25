@@ -50,7 +50,6 @@ public class TrainController extends BaseController
     /**
      * 获取列车详细信息
      */
-    @PreAuthorize("@ss.hasPermi('train:train:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {

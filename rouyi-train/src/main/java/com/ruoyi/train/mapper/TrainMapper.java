@@ -20,7 +20,7 @@ public interface TrainMapper
      * @param id 列车主键
      * @return 列车
      */
-    public Train selectTrainById(String id);
+    public TrainResDTO selectTrainById(String id);
 
     /**
      * 查询列车列表

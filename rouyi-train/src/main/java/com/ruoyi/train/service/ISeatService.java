@@ -58,4 +58,8 @@ public interface ISeatService
      * @return 结果
      */
     public int deleteSeatById(String id);
+
+    Seat selectSeatByTrainAndType(String id,String type, String number);
+
+    void cancelSeatTicket(String id);
 }

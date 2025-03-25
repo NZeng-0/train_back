@@ -43,6 +43,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result column="business_seat" property="businessSeat"/>
         <result column="first_seat" property="firstSeat"/>
         <result column="second_seat" property="secondSeat"/>
+        <result column="business_price" property="businessPrice"/>
+        <result column="first_price" property="firstPrice"/>
+        <result column="second_price" property="secondPrice"/>
     </resultMap>
 
 
@@ -60,6 +63,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <sql id="secondSeatCount">
         (SELECT COALESCE(SUM(c.seat_count - c.sold_seats), 0) FROM t_carriage c WHERE c.train_id = t.id AND c.carriage_type = 2)
+    </sql>
+
+    <sql id="businessSeatPrice">
+        (SELECT COALESCE(max(c.price), 0) FROM t_carriage c WHERE c.train_id = t.id AND c.carriage_type = 0)
+    </sql>
+
+    <sql id="firstSeatPrice">
+        (SELECT COALESCE(max(c.price), 0) FROM t_carriage c WHERE c.train_id = t.id AND c.carriage_type = 1)
+    </sql>
+
+    <sql id="secondSeatPrice">
+        (SELECT COALESCE(max(c.price), 0) FROM t_carriage c WHERE c.train_id = t.id AND c.carriage_type = 2)
     </sql>
 
     <sql id="selectTrainV1">
@@ -82,7 +97,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         t.del_flag,
         <include refid="businessSeatCount"/> AS business_seat,
         <include refid="firstSeatCount"/> AS first_seat,
-        <include refid="secondSeatCount"/> AS second_seat
+        <include refid="secondSeatCount"/> AS second_seat,
+        <include refid="businessSeatPrice"/> AS business_price,
+        <include refid="firstSeatPrice"/> AS first_price,
+        <include refid="secondSeatPrice"/> AS second_price
         FROM t_train t
     </sql>
 
@@ -108,8 +126,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectTrainById" parameterType="String" resultMap="TrainResult">
-        <include refid="selectTrainVo"/>
+    <select id="selectTrainById" parameterType="String" resultMap="TrainResultAndroid">
+        <include refid="selectTrainV1"/>
         where id = #{id}
     </select>
 

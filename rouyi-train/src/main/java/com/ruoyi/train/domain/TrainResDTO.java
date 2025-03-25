@@ -10,6 +10,10 @@ public class TrainResDTO extends Train{
     /** 二等座余票 */
     private Integer secondSeat;
 
+    private Integer businessPrice;
+    private Integer firstPrice;
+    private Integer secondPrice;
+
     public Integer getBusinessSeat() {
         return businessSeat;
     }
@@ -32,5 +36,29 @@ public class TrainResDTO extends Train{
 
     public void setSecondSeat(Integer secondSeat) {
         this.secondSeat = secondSeat;
+    }
+
+    public Integer getBusinessPrice() {
+        return businessPrice;
+    }
+
+    public void setBusinessPrice(Integer businessPrice) {
+        this.businessPrice = businessPrice;
+    }
+
+    public Integer getFirstPrice() {
+        return firstPrice;
+    }
+
+    public void setFirstPrice(Integer firstPrice) {
+        this.firstPrice = firstPrice;
+    }
+
+    public Integer getSecondPrice() {
+        return secondPrice;
+    }
+
+    public void setSecondPrice(Integer secondPrice) {
+        this.secondPrice = secondPrice;
     }
 }

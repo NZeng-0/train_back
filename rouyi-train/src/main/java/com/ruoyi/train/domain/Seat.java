@@ -53,6 +53,10 @@ public class Seat extends BaseEntity
     /** 删除标识 */
     private Integer delFlag;
 
+    public Seat() {
+
+    }
+
     public Seat(
             Long trainId,
             String carriageNumber,
