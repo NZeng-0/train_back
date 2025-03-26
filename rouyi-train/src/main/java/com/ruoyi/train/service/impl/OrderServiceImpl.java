@@ -1,7 +1,9 @@
 package com.ruoyi.train.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.train.mapper.SeatMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.train.mapper.OrderMapper;
@@ -19,6 +21,9 @@ public class OrderServiceImpl implements IOrderService
 {
     @Autowired
     private OrderMapper orderMapper;
+
+    @Autowired
+    private SeatMapper seatMapper;
 
     /**
      * 查询订单
@@ -53,7 +58,13 @@ public class OrderServiceImpl implements IOrderService
     @Override
     public int insertOrder(Order order)
     {
+        order.setOrderSn(setOrderSn());
+        order.setDelFlag(0);
         order.setCreateTime(DateUtils.getNowDate());
+        order.setUpdateTime(DateUtils.getNowDate());
+        order.setPayTime(DateUtils.getNowDate());
+        int id = seatMapper.getSeatByCoachAndNumber(order.getCarriageNumber(), order.getSeatNumber());
+        seatMapper.updateSeatStatus(String.valueOf(id), 2);
         return orderMapper.insertOrder(order);
     }
 
@@ -92,5 +103,26 @@ public class OrderServiceImpl implements IOrderService
     public int deleteOrderById(String id)
     {
         return orderMapper.deleteOrderById(id);
+    }
+
+    public List<Order> getMyOrder(String id) {
+        return orderMapper.selectOrderByUserId(id);
+    }
+
+    private String setOrderSn() {
+        String orderSn;
+        do {
+            orderSn = generateOrderSn();
+        } while (orderMapper.existsByOrderSn(orderSn));
+        return orderSn;
+    }
+
+    private String generateOrderSn() {
+        // 取时间戳后 10 位
+        long timestamp = System.currentTimeMillis() % 10000000000L;
+        // 生成 2 位随机数
+        int randomNum = (int) (Math.random() * 100);
+        // 组合成 10 位订单号
+        return String.format("%08d%02d", timestamp, randomNum);
     }
 }

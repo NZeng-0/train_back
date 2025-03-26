@@ -58,4 +58,7 @@ public interface IOrderService
      * @return 结果
      */
     public int deleteOrderById(String id);
+
+    // 用户获取中间的订单信息
+    List<Order> getMyOrder(String id);
 }

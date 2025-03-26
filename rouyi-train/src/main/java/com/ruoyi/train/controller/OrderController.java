@@ -4,14 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -37,7 +30,6 @@ public class OrderController extends BaseController
     /**
      * 查询订单列表
      */
-    @PreAuthorize("@ss.hasPermi('train:order:list')")
     @GetMapping("/list")
     public TableDataInfo list(Order order)
     {
@@ -49,8 +41,6 @@ public class OrderController extends BaseController
     /**
      * 导出订单列表
      */
-    @PreAuthorize("@ss.hasPermi('train:order:export')")
-    @Log(title = "订单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, Order order)
     {
@@ -62,7 +52,6 @@ public class OrderController extends BaseController
     /**
      * 获取订单详细信息
      */
-    @PreAuthorize("@ss.hasPermi('train:order:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -72,8 +61,6 @@ public class OrderController extends BaseController
     /**
      * 新增订单
      */
-    @PreAuthorize("@ss.hasPermi('train:order:add')")
-    @Log(title = "订单", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Order order)
     {
@@ -83,8 +70,6 @@ public class OrderController extends BaseController
     /**
      * 修改订单
      */
-    @PreAuthorize("@ss.hasPermi('train:order:edit')")
-    @Log(title = "订单", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Order order)
     {
@@ -94,11 +79,16 @@ public class OrderController extends BaseController
     /**
      * 删除订单
      */
-    @PreAuthorize("@ss.hasPermi('train:order:remove')")
-    @Log(title = "订单", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)
     {
         return toAjax(orderService.deleteOrderByIds(ids));
+    }
+
+    @GetMapping("my")
+    public TableDataInfo getMyOrder(@RequestParam("id") String id){
+        startPage();
+        List<Order> list = orderService.getMyOrder(id);
+        return getDataTable(list);
     }
 }

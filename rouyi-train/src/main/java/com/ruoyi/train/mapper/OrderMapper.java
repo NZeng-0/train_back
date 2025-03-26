@@ -2,6 +2,9 @@ package com.ruoyi.train.mapper;
 
 import java.util.List;
 import com.ruoyi.train.domain.Order;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 订单Mapper接口
@@ -9,6 +12,7 @@ import com.ruoyi.train.domain.Order;
  * @author me
  * @date 2025-03-25
  */
+@Mapper
 public interface OrderMapper 
 {
     /**
@@ -58,4 +62,9 @@ public interface OrderMapper
      * @return 结果
      */
     public int deleteOrderByIds(String[] ids);
+
+    @Select("SELECT COUNT(*) FROM t_order WHERE order_sn = #{orderSn}")
+    boolean existsByOrderSn(@Param("orderSn") String orderSn);
+
+    List<Order> selectOrderByUserId(@Param("user_id")String id);
 }

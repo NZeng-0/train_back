@@ -1,6 +1,8 @@
 package com.ruoyi.train.domain;
 
 import java.util.Date;
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -113,11 +115,9 @@ public class Order extends BaseEntity
         return id;
     }
 
-    public void setOrderSn(String orderSn) 
-    {
+    public void setOrderSn(String orderSn) {
         this.orderSn = orderSn;
     }
-
     public String getOrderSn() 
     {
         return orderSn;

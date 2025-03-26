@@ -64,6 +64,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </select>
 
+    <select id="selectOrderByUserId" parameterType="String" resultMap="OrderResult">
+        <include refid="selectOrderVo"/>
+        where user_id = #{user_id}
+    </select>
+
     <insert id="insertOrder" parameterType="Order" useGeneratedKeys="true" keyProperty="id">
         insert into t_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
