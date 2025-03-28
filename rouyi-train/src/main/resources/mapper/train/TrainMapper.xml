@@ -120,7 +120,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 AND end_region LIKE CONCAT('%', #{endRegion}, '%')
             </if>
             <if test="saleTime != null "> and sale_time = #{saleTime}</if>
-            <if test="saleStatus != null "> and sale_status = #{saleStatus}</if>
+<!--            <if test="saleStatus != null "> and sale_status = #{saleStatus}</if>-->
             <if test="departureTime != null "> and departure_time = #{departureTime}</if>
             <if test="arrivalTime != null "> and arrival_time = #{arrivalTime}</if>
         </where>

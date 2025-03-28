@@ -3,6 +3,7 @@ package com.ruoyi.train.service.impl;
 import java.util.Date;
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.train.mapper.CarriageMapper;
 import com.ruoyi.train.mapper.SeatMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class OrderServiceImpl implements IOrderService
 
     @Autowired
     private SeatMapper seatMapper;
+
+    @Autowired
+    private CarriageMapper carriageMapper;
 
     /**
      * 查询订单
@@ -56,15 +60,15 @@ public class OrderServiceImpl implements IOrderService
      * @return 结果
      */
     @Override
-    public int insertOrder(Order order)
-    {
+    public int insertOrder(Order order) {
         order.setOrderSn(setOrderSn());
         order.setDelFlag(0);
         order.setCreateTime(DateUtils.getNowDate());
         order.setUpdateTime(DateUtils.getNowDate());
         order.setPayTime(DateUtils.getNowDate());
-        int id = seatMapper.getSeatByCoachAndNumber(order.getCarriageNumber(), order.getSeatNumber());
+        Long id = seatMapper.getSeatByCoachAndNumber(order.getCarriageNumber(), order.getSeatNumber());
         seatMapper.updateSeatStatus(String.valueOf(id), 2);
+        carriageMapper.updateSoldSeats(order.getTrainId().toString(), Integer.parseInt(order.getCarriageNumber()),order.getSeatType().intValue());
         return orderMapper.insertOrder(order);
     }
 

@@ -189,13 +189,25 @@ public class UserServiceImpl implements IUserService {
     }
 
     public String getUsernameFromToken(String token) {
-        if (token.startsWith("Bearer ")) {
-            token = token.substring(7);
+        if (token == null || token.isEmpty()) {
+            throw new IllegalArgumentException("Token cannot be null or empty");
         }
+
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7).trim(); // 移除 "Bearer " 并去除空格
+        }
+
+        // 检查 JWT 格式（必须包含 2 个点）
+        if (token.chars().filter(ch -> ch == '.').count() != 2) {
+            throw new IllegalArgumentException("Invalid JWT format: Token must contain exactly 2 periods");
+        }
+
+        // 解析 JWT
         Claims claims = Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody();
+
         return claims.getSubject();
     }
 }

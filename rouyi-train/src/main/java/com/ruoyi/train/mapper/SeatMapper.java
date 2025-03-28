@@ -78,7 +78,6 @@ public interface SeatMapper {
     Integer getSeatStatusById(@Param("seatId") String seatId);
 
     // 根据 车厢 和 座位查询
-    @Select("SELECT id FROM t_seat WHERE coach_id = #{carriage_number} AND seat_number = #{seat_number}")
-    Integer getSeatByCoachAndNumber(@Param("carriage_number") String coachId, @Param("seat_number") String seatNumber);
-
+    @Select("SELECT id FROM t_seat WHERE carriage_number = #{carriage_number} AND seat_number = #{seat_number}")
+    Long getSeatByCoachAndNumber(@Param("carriage_number") String coachId, @Param("seat_number") String seatNumber);
 }
