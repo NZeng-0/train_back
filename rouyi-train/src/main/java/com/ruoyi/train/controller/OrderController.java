@@ -2,6 +2,7 @@ package com.ruoyi.train.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +17,13 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 订单Controller
- * 
+ *
  * @author me
  * @date 2025-03-25
  */
 @RestController
 @RequestMapping("/train/order")
-public class OrderController extends BaseController
-{
+public class OrderController extends BaseController {
     @Autowired
     private IOrderService orderService;
 
@@ -31,8 +31,7 @@ public class OrderController extends BaseController
      * 查询订单列表
      */
     @GetMapping("/list")
-    public TableDataInfo list(Order order)
-    {
+    public TableDataInfo list(Order order) {
         startPage();
         List<Order> list = orderService.selectOrderList(order);
         return getDataTable(list);
@@ -42,8 +41,7 @@ public class OrderController extends BaseController
      * 导出订单列表
      */
     @PostMapping("/export")
-    public void export(HttpServletResponse response, Order order)
-    {
+    public void export(HttpServletResponse response, Order order) {
         List<Order> list = orderService.selectOrderList(order);
         ExcelUtil<Order> util = new ExcelUtil<Order>(Order.class);
         util.exportExcel(response, list, "订单数据");
@@ -53,8 +51,7 @@ public class OrderController extends BaseController
      * 获取订单详细信息
      */
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") String id)
-    {
+    public AjaxResult getInfo(@PathVariable("id") String id) {
         return success(orderService.selectOrderById(id));
     }
 
@@ -62,8 +59,7 @@ public class OrderController extends BaseController
      * 新增订单
      */
     @PostMapping
-    public AjaxResult add(@RequestBody Order order)
-    {
+    public AjaxResult add(@RequestBody Order order) {
         return toAjax(orderService.insertOrder(order));
     }
 
@@ -71,24 +67,24 @@ public class OrderController extends BaseController
      * 修改订单
      */
     @PutMapping
-    public AjaxResult edit(@RequestBody Order order)
-    {
+    public AjaxResult edit(@RequestBody Order order) {
         return toAjax(orderService.updateOrder(order));
     }
 
     /**
      * 删除订单
      */
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable String[] ids)
-    {
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable String[] ids) {
         return toAjax(orderService.deleteOrderByIds(ids));
     }
 
     @GetMapping("my")
-    public TableDataInfo getMyOrder(@RequestParam("id") String id){
+    public TableDataInfo getMyOrder(
+            @RequestParam("id") String id,
+            @RequestParam(value = "status", defaultValue = "-1") int status) {
         startPage();
-        List<Order> list = orderService.getMyOrder(id);
+        List<Order> list = orderService.getMyOrder(id, status);
         return getDataTable(list);
     }
 
@@ -101,10 +97,20 @@ public class OrderController extends BaseController
 
     ) {
         Boolean b = orderService.exitsToday(id, date, departure, arrival);
-        if(b){
+        if (b) {
             return error("您在该日期已有相似行程，请检查");
         } else {
             return success("ok");
+        }
+    }
+
+    @GetMapping("cancel")
+    public AjaxResult cancelOrder(@RequestParam("id") String id) {
+        int result = orderService.cancelOrder(id);
+        if (result > 0) {
+            return success("订单取消成功");
+        } else {
+            return error("订单取消失败，可能已经被取消或状态不符合");
         }
     }
 }

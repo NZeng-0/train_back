@@ -60,7 +60,9 @@ public interface IOrderService
     public int deleteOrderById(String id);
 
     // 用户获取中间的订单信息
-    List<Order> getMyOrder(String id);
+    List<Order> getMyOrder(String id, int status);
 
     Boolean exitsToday(String user_id, String date, String departure, String arrival);
+
+    int cancelOrder(String id);
 }

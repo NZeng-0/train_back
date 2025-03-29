@@ -1,5 +1,6 @@
 package com.ruoyi.train.mapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import com.ruoyi.train.domain.Order;
 import org.apache.ibatis.annotations.Mapper;
@@ -70,6 +71,12 @@ public interface OrderMapper
 
     List<Order> selectOrderByUserId(@Param("user_id")String id);
 
+    /**
+     * 查询用户特定状态的订单
+     */
+    List<Order> selectOrdersByUserIdAndStatus(@Param("userId") String userId, @Param("status") int status);
+
+
     boolean existsToday(
             @Param("user_id") String user_id,
             @Param("riding_date") String date,
@@ -102,4 +109,11 @@ public interface OrderMapper
     @Update("UPDATE t_order SET status = #{status}, update_time = #{updateTime} " +
             "WHERE id = #{id}")
     int updateOrderStatus(Order order);
+
+    /**
+     * 取消订单
+     */
+    @Update("UPDATE t_order SET status = 2, update_time = #{updateTime} WHERE id = #{id}")
+    int cancelOrder(@Param("id") String id, @Param("updateTime") LocalDateTime updateTime);
+
 }

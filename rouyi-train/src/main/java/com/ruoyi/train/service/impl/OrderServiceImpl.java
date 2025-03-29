@@ -1,5 +1,6 @@
 package com.ruoyi.train.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -110,8 +111,18 @@ public class OrderServiceImpl implements IOrderService {
         return orderMapper.deleteOrderById(id);
     }
 
-    public List<Order> getMyOrder(String id) {
-        return orderMapper.selectOrderByUserId(id);
+    public List<Order> getMyOrder(String id, int status) {
+        if (status == -1) {
+            // 查询用户的所有订单
+            return orderMapper.selectOrderByUserId(id);
+        } else {
+            // 查询用户特定状态的订单
+            return orderMapper.selectOrdersByUserIdAndStatus(id, status);
+        }
+    }
+
+    public int cancelOrder(String id) {
+        return orderMapper.cancelOrder(id, LocalDateTime.now());
     }
 
     private String setOrderSn() {
