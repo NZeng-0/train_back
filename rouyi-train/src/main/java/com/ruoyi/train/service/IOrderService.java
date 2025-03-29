@@ -61,4 +61,6 @@ public interface IOrderService
 
     // 用户获取中间的订单信息
     List<Order> getMyOrder(String id);
+
+    Boolean exitsToday(String user_id, String date, String departure, String arrival);
 }

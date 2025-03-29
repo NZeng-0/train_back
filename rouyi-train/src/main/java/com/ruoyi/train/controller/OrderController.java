@@ -91,4 +91,20 @@ public class OrderController extends BaseController
         List<Order> list = orderService.getMyOrder(id);
         return getDataTable(list);
     }
+
+    @GetMapping("exists")
+    public AjaxResult existsToday(
+            @RequestParam("userId") String id,
+            @RequestParam("date") String date,
+            @RequestParam("departure") String departure,
+            @RequestParam("arrival") String arrival
+
+    ) {
+        Boolean b = orderService.exitsToday(id, date, departure, arrival);
+        if(b){
+            return error("您在该日期已有相似行程，请检查");
+        } else {
+            return success("ok");
+        }
+    }
 }

@@ -5,6 +5,8 @@ import com.ruoyi.train.domain.Order;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.springframework.security.core.parameters.P;
 
 /**
  * 订单Mapper接口
@@ -67,4 +69,37 @@ public interface OrderMapper
     boolean existsByOrderSn(@Param("orderSn") String orderSn);
 
     List<Order> selectOrderByUserId(@Param("user_id")String id);
+
+    boolean existsToday(
+            @Param("user_id") String user_id,
+            @Param("riding_date") String date,
+            @Param("departure") String departure,
+            @Param("arrival") String arrival
+    );
+
+    /**
+     * 查找所有过期的订单
+     * 由于riding_date和arrival_time是分开存储的，我们需要合并它们进行比较
+     */
+    @Select("SELECT * FROM t_order WHERE status = #{paidStatus} " +
+            "AND status != #{refundedStatus} " +
+            "AND status != #{completedStatus} " +
+            "AND CONCAT(riding_date, ' ', arrival_time) < NOW() " +
+            "AND del_flag = 0")
+    List<Order> findExpiredOrders(@Param("paidStatus") int paidStatus,
+                                  @Param("refundedStatus") int refundedStatus,
+                                  @Param("completedStatus") int completedStatus);
+
+    /**
+     * 手动测试用：获取所有要处理的订单记录
+     */
+    @Select("SELECT * FROM t_order WHERE status = 1 AND del_flag = 0")
+    List<Order> getAllPaidOrders();
+
+    /**
+     * 更新订单状态
+     */
+    @Update("UPDATE t_order SET status = #{status}, update_time = #{updateTime} " +
+            "WHERE id = #{id}")
+    int updateOrderStatus(Order order);
 }

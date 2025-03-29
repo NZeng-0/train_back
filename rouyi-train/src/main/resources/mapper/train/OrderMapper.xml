@@ -160,4 +160,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="existsToday" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM t_order
+            WHERE user_id = #{user_id}
+              AND riding_date = #{riding_date}
+              AND (
+                    (departure = #{departure} AND arrival = #{arrival})
+                    OR
+                    (departure = #{departure} OR arrival = #{arrival})
+                )
+        )
+    </select>
 </mapper>

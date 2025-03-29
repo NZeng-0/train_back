@@ -2,9 +2,11 @@ package com.ruoyi.train.service.impl;
 
 import java.util.Date;
 import java.util.List;
+
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.train.mapper.CarriageMapper;
 import com.ruoyi.train.mapper.SeatMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.train.mapper.OrderMapper;
@@ -13,13 +15,12 @@ import com.ruoyi.train.service.IOrderService;
 
 /**
  * 订单Service业务层处理
- * 
+ *
  * @author me
  * @date 2025-03-25
  */
 @Service
-public class OrderServiceImpl implements IOrderService 
-{
+public class OrderServiceImpl implements IOrderService {
     @Autowired
     private OrderMapper orderMapper;
 
@@ -31,31 +32,34 @@ public class OrderServiceImpl implements IOrderService
 
     /**
      * 查询订单
-     * 
+     *
      * @param id 订单主键
      * @return 订单
      */
     @Override
-    public Order selectOrderById(String id)
-    {
+    public Order selectOrderById(String id) {
         return orderMapper.selectOrderById(id);
     }
 
     /**
      * 查询订单列表
-     * 
+     *
      * @param order 订单
      * @return 订单
      */
     @Override
-    public List<Order> selectOrderList(Order order)
-    {
+    public List<Order> selectOrderList(Order order) {
         return orderMapper.selectOrderList(order);
+    }
+
+    // 用户行程是否冲突
+    public Boolean exitsToday(String user_id, String date, String departure, String arrival) {
+        return orderMapper.existsToday(user_id, date, departure, arrival);
     }
 
     /**
      * 新增订单
-     * 
+     *
      * @param order 订单
      * @return 结果
      */
@@ -66,46 +70,43 @@ public class OrderServiceImpl implements IOrderService
         order.setCreateTime(DateUtils.getNowDate());
         order.setUpdateTime(DateUtils.getNowDate());
         order.setPayTime(DateUtils.getNowDate());
-        Long id = seatMapper.getSeatByCoachAndNumber(order.getCarriageNumber(), order.getSeatNumber());
+        Long id = seatMapper.getSeatByCoachAndNumber(order.getTrainId().toString(), order.getCarriageNumber(), order.getSeatNumber());
         seatMapper.updateSeatStatus(String.valueOf(id), 2);
-        carriageMapper.updateSoldSeats(order.getTrainId().toString(), Integer.parseInt(order.getCarriageNumber()),order.getSeatType().intValue());
+        carriageMapper.updateSoldSeats(order.getTrainId().toString(), Integer.parseInt(order.getCarriageNumber()), order.getSeatType().intValue());
         return orderMapper.insertOrder(order);
     }
 
     /**
      * 修改订单
-     * 
+     *
      * @param order 订单
      * @return 结果
      */
     @Override
-    public int updateOrder(Order order)
-    {
+    public int updateOrder(Order order) {
         order.setUpdateTime(DateUtils.getNowDate());
         return orderMapper.updateOrder(order);
     }
 
     /**
      * 批量删除订单
-     * 
+     *
      * @param ids 需要删除的订单主键
      * @return 结果
      */
     @Override
-    public int deleteOrderByIds(String[] ids)
-    {
+    public int deleteOrderByIds(String[] ids) {
         return orderMapper.deleteOrderByIds(ids);
     }
 
     /**
      * 删除订单信息
-     * 
+     *
      * @param id 订单主键
      * @return 结果
      */
     @Override
-    public int deleteOrderById(String id)
-    {
+    public int deleteOrderById(String id) {
         return orderMapper.deleteOrderById(id);
     }
 

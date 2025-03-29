@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.train.mapper.CarriageMapper">
+    
+    <resultMap type="Carriage" id="CarriageResult">
+        <result property="id"    column="id"    />
+        <result property="trainId"    column="train_id"    />
+        <result property="carriageNumber"    column="carriage_number"    />
+        <result property="carriageType"    column="carriage_type"    />
+        <result property="seatCount"    column="seat_count"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="soldSeats"    column="sold_seats"    />
+        <result property="price"    column="price"    />
+    </resultMap>
+
+    <sql id="selectCarriageVo">
+        select id, train_id, carriage_number, carriage_type, seat_count, create_time, update_time, del_flag, sold_seats, price from t_carriage
+    </sql>
+
+    <select id="selectCarriageList" parameterType="Carriage" resultMap="CarriageResult">
+        <include refid="selectCarriageVo"/>
+        <where>  
+            <if test="trainId != null "> and train_id = #{trainId}</if>
+            <if test="carriageNumber != null  and carriageNumber != ''"> and carriage_number = #{carriageNumber}</if>
+            <if test="carriageType != null "> and carriage_type = #{carriageType}</if>
+            <if test="seatCount != null "> and seat_count = #{seatCount}</if>
+            <if test="soldSeats != null "> and sold_seats = #{soldSeats}</if>
+            <if test="price != null "> and price = #{price}</if>
+        </where>
+    </select>
+    
+    <select id="selectCarriageById" parameterType="String" resultMap="CarriageResult">
+        <include refid="selectCarriageVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCarriage" parameterType="Carriage" useGeneratedKeys="true" keyProperty="id">
+        insert into t_carriage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="trainId != null">train_id,</if>
+            <if test="carriageNumber != null">carriage_number,</if>
+            <if test="carriageType != null">carriage_type,</if>
+            <if test="seatCount != null">seat_count,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="soldSeats != null">sold_seats,</if>
+            <if test="price != null">price,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="trainId != null">#{trainId},</if>
+            <if test="carriageNumber != null">#{carriageNumber},</if>
+            <if test="carriageType != null">#{carriageType},</if>
+            <if test="seatCount != null">#{seatCount},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="soldSeats != null">#{soldSeats},</if>
+            <if test="price != null">#{price},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCarriage" parameterType="Carriage">
+        update t_carriage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="trainId != null">train_id = #{trainId},</if>
+            <if test="carriageNumber != null">carriage_number = #{carriageNumber},</if>
+            <if test="carriageType != null">carriage_type = #{carriageType},</if>
+            <if test="seatCount != null">seat_count = #{seatCount},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="soldSeats != null">sold_seats = #{soldSeats},</if>
+            <if test="price != null">price = #{price},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCarriageById" parameterType="String">
+        delete from t_carriage where id = #{id}
+    </delete>
+
+    <delete id="deleteCarriageByIds" parameterType="String">
+        delete from t_carriage where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="batchInsertCarriages" parameterType="java.util.List">
+        INSERT INTO t_carriage (
+        train_id,
+        carriage_number,
+        carriage_type,
+        seat_count,
+        create_time,
+        update_time,
+        del_flag,
+        sold_seats,
+        price
+        ) VALUES
+        <foreach collection="list" item="carriage" separator=",">
+            (
+            #{carriage.trainId},
+            #{carriage.carriageNumber},
+            #{carriage.carriageType},
+            #{carriage.seatCount},
+            #{carriage.createTime},
+            #{carriage.createTime},
+            #{carriage.delFlag},
+            #{carriage.soldSeats},
+            #{carriage.price}
+            )
+        </foreach>
+    </insert>
+</mapper>
