@@ -122,6 +122,11 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     public int cancelOrder(String id) {
+
+        Order order = orderMapper.selectOrderById(id);
+
+        carriageMapper.decreaseSoldSeats(order.getTrainId().toString(), Integer.parseInt(order.getCarriageNumber()), order.getSeatType().intValue());
+
         return orderMapper.cancelOrder(id, LocalDateTime.now());
     }
 

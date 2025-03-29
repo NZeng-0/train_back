@@ -164,6 +164,20 @@ public class UserServiceImpl implements IUserService {
         return "登出成功";
     }
 
+    public boolean updatePassword(String id, String oldPassword, String newPassword) {
+        User user = userMapper.selectUserById(id);
+
+        // 验证旧密码
+        if (user == null || !passwordEncoder.matches(oldPassword, user.getPassword())) {
+            return false;
+        }
+
+        // 加密新密码
+        String encryptedPassword = SecurityUtils.encryptPassword(newPassword);
+
+        return userMapper.updatePassword(id, encryptedPassword) > 0;
+    }
+
     public User getUserByName(String token){
         String username = getUsernameFromToken(token);
         return userMapper.selectUserByUserName(username);

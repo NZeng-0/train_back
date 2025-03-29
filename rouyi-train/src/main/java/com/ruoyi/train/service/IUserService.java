@@ -2,6 +2,7 @@ package com.ruoyi.train.service;
 
 import java.util.List;
 import com.ruoyi.train.domain.User;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -67,4 +68,6 @@ public interface IUserService
     User getUserByName(String token);
 
     String logout();
+
+    boolean updatePassword(String id, String oldPassword, String newPassword);
 }

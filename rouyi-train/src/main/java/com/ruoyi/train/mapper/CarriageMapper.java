@@ -15,5 +15,9 @@ public interface CarriageMapper {
             "AND carriage_type = #{carriage_type} AND sold_seats < seat_count")
     void updateSoldSeats(@Param("train_id")String id, @Param("carriage_number") int number, @Param("carriage_type") int type);
 
+    @Update("UPDATE t_carriage SET sold_seats = sold_seats - 1 WHERE train_id = #{train_id} AND carriage_number = #{carriage_number} " +
+            "AND carriage_type = #{carriage_type} AND sold_seats > 0")
+    void decreaseSoldSeats(@Param("train_id") String id, @Param("carriage_number") int number, @Param("carriage_type") int type);
+
     void batchInsertCarriages(List<Carriage> carriages);
 }

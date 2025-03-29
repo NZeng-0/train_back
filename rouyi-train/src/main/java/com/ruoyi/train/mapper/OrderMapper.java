@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.springframework.security.core.parameters.P;
 
 /**
  * 订单Mapper接口
@@ -98,7 +97,7 @@ public interface OrderMapper
                                   @Param("completedStatus") int completedStatus);
 
     /**
-     * 手动测试用：获取所有要处理的订单记录
+     * 获取所有要处理的订单记录
      */
     @Select("SELECT * FROM t_order WHERE status = 1 AND del_flag = 0")
     List<Order> getAllPaidOrders();

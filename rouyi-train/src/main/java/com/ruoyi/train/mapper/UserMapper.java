@@ -3,6 +3,8 @@ package com.ruoyi.train.mapper;
 import java.util.List;
 import com.ruoyi.train.domain.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * 用户Mapper接口
@@ -69,4 +71,7 @@ public interface UserMapper
     int checkRealNameExists(String realName);
 
     User selectUserByUserName(String username);
+
+    @Update("UPDATE t_user SET password = #{newPassword} WHERE id = #{id}")
+    int updatePassword(@Param("id") String id, @Param("newPassword") String newPassword);
 }
